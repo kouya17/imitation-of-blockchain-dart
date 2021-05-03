@@ -3,6 +3,7 @@
 ## Usage
 
 ```bash
+dart run build_runner build
 dart bin/back.dart --port 6565
 ```
 
