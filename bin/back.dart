@@ -25,8 +25,11 @@ class TransactRequest {
 }
 
 void main(List<String> args) async {
+  var portEnv = Platform.environment['PORT'];
+  var port = portEnv = portEnv ?? '9999';
+
   var parser = ArgParser();
-  parser.addOption('port', abbr: 'p');
+  parser.addOption('port', abbr: 'p', defaultsTo: port);
   parser.addOption('peer', abbr: 'e', defaultsTo: '');
   var parsedArgs = parser.parse(args);
 
