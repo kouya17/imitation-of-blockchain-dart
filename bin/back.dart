@@ -83,7 +83,7 @@ void main(List<String> args) async {
     wallet.createTransaction(
         transactRequest.recipient!, transactRequest.amount!);
     unawaited(res.redirect(
-        Uri.https('dart-blockchain-test-app.herokuapp.com:' + port, '/transactions')));
+        Uri.https('dart-blockchain-test-app.herokuapp.com', '/transactions')));
   });
 
   app.get('/wallet', (req, res) {
@@ -93,7 +93,7 @@ void main(List<String> args) async {
   app.post('/mine', (req, res) {
     miner.mine();
     res.redirect(Uri.https(
-        'dart-blockchain-test-app.herokuapp.com:' + port,
+        'dart-blockchain-test-app.herokuapp.com',
         '/blocks'));
   });
 
