@@ -4,7 +4,7 @@
 
 ```bash
 dart run build_runner build
-dart bin/back.dart --port 6565
+dart bin/back.dart --port 6565 --peer ws://dart-blockchain-test-app.herokuapp.com/ws
 ```
 
 ---
