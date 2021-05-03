@@ -28,10 +28,14 @@ void main(List<String> args) async {
   var portEnv = Platform.environment['PORT'];
 
   var parser = ArgParser();
+  parser.addOption('host', abbr: 'h', defaultsTo: 'localhost');
   parser.addOption('port', abbr: 'p', defaultsTo: portEnv ?? 'port');
   parser.addOption('peer', abbr: 'e', defaultsTo: '');
+  parser.addFlag('https', abbr: 's', defaultsTo: false);
   final parsedArgs = parser.parse(args);
   final port = parsedArgs['port'];
+  final host = parsedArgs['host'];
+  final isHttps = parsedArgs['https'];
 
   final app = Alfred();
   final blockchain = Blockchain();
@@ -82,8 +86,7 @@ void main(List<String> args) async {
     }
     wallet.createTransaction(
         transactRequest.recipient!, transactRequest.amount!);
-    unawaited(res.redirect(
-        Uri.https('dart-blockchain-test-app.herokuapp.com', '/transactions')));
+    unawaited(res.redirect(getRedirectUri('$host:$port', '/transactions', isHttps)));
   });
 
   app.get('/wallet', (req, res) {
@@ -92,10 +95,17 @@ void main(List<String> args) async {
 
   app.post('/mine', (req, res) {
     miner.mine();
-    res.redirect(Uri.https(
-        'dart-blockchain-test-app.herokuapp.com',
-        '/blocks'));
+
+    res.redirect(getRedirectUri('$host:$port', '/blocks', isHttps));
   });
 
-  await app.listen(int.parse(parsedArgs['port']));
+  print('Serving front end App on http://$host:$port/public');
+  await app.listen(int.parse(port));
+}
+
+Uri getRedirectUri(String authority, String path, bool isHttps) {
+  if (isHttps) {
+    return Uri.https('$authority', path);
+  }
+  return Uri.http('$authority', path);
 }
