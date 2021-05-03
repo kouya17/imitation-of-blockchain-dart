@@ -83,7 +83,7 @@ void main(List<String> args) async {
     wallet.createTransaction(
         transactRequest.recipient!, transactRequest.amount!);
     unawaited(res.redirect(
-        Uri.http('localhost:' + parsedArgs['port'], '/transactions')));
+        Uri.https('localhost:' + parsedArgs['port'], '/transactions')));
   });
 
   app.get('/wallet', (req, res) {
@@ -92,7 +92,7 @@ void main(List<String> args) async {
 
   app.post('/mine', (req, res) {
     miner.mine();
-    res.redirect(Uri.http('localhost:' + parsedArgs['port'], '/blocks'));
+    res.redirect(Uri.https('localhost:' + parsedArgs['port'], '/blocks'));
   });
 
   await app.listen(int.parse(parsedArgs['port']));
