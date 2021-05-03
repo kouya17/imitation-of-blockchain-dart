@@ -26,12 +26,12 @@ class TransactRequest {
 
 void main(List<String> args) async {
   var portEnv = Platform.environment['PORT'];
-  var port = portEnv = portEnv ?? '9999';
 
   var parser = ArgParser();
-  parser.addOption('port', abbr: 'p', defaultsTo: port);
+  parser.addOption('port', abbr: 'p', defaultsTo: portEnv ?? 'port');
   parser.addOption('peer', abbr: 'e', defaultsTo: '');
-  var parsedArgs = parser.parse(args);
+  final parsedArgs = parser.parse(args);
+  final port = parsedArgs['port'];
 
   final app = Alfred();
   final blockchain = Blockchain();
@@ -83,7 +83,7 @@ void main(List<String> args) async {
     wallet.createTransaction(
         transactRequest.recipient!, transactRequest.amount!);
     unawaited(res.redirect(
-        Uri.https('localhost:' + parsedArgs['port'], '/transactions')));
+        Uri.https('dart-blockchain-test-app.herokuapp.com:' + port, '/transactions')));
   });
 
   app.get('/wallet', (req, res) {
@@ -92,7 +92,9 @@ void main(List<String> args) async {
 
   app.post('/mine', (req, res) {
     miner.mine();
-    res.redirect(Uri.https('localhost:' + parsedArgs['port'], '/blocks'));
+    res.redirect(Uri.https(
+        'dart-blockchain-test-app.herokuapp.com:' + port,
+        '/blocks'));
   });
 
   await app.listen(int.parse(parsedArgs['port']));
