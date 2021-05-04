@@ -6,7 +6,7 @@
 dart pub get
 dart pub global activate webdev
 webdev build --output web:public
-dart bin/back.dart --port 6565 --peer ws://dart-blockchain-test-app.herokuapp.com/ws
+dart bin/back.dart --port 6565 [--peer ws://dart-blockchain-test-app.herokuapp.com/ws]
 ```
 
 ---
